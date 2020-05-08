@@ -12,4 +12,7 @@
 <div *ngIf="isAuthenticated() && showNotification" class="container alert alert-danger" role="alert">
   You are wasting food based on your current goal! Consider donating...
 </div>
+<div *ngIf="isAuthenticated() && !showNotification" class="container alert alert-primary" role="alert">
+  There is no waste!
+</div>
 <router-outlet></router-outlet>

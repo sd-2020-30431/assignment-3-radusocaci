@@ -3,6 +3,7 @@ import {AuthService} from "./auth.service";
 import * as Stomp from "stompjs"
 import * as SockJS from "sockjs-client"
 import {NotificationHandler} from "./notification-handler";
+import {report} from "./report.decorator";
 
 @Component({
   selector: 'app-root',
@@ -45,6 +46,7 @@ export class AppComponent {
     })
   }
 
+  @report()
   private update() {
     this.showNotification = this.notificationHandler.msg === 'show';
   }
