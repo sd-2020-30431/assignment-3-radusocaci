@@ -1,4 +1,4 @@
-package com.wasteless.sd.Service;
+package com.wasteless.sd.Service.query;
 
 import com.wasteless.sd.Factory.FactoryProvider;
 import com.wasteless.sd.Model.GroceryListItem;
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ReportService {
+public class ReportQueryService {
     private final GroceryListRepository groceryListRepository;
     private final GroceryItemRepository groceryItemRepository;
 
-    public ReportService(GroceryListRepository groceryListRepository,
-                         GroceryItemRepository groceryItemRepository) {
+    public ReportQueryService(GroceryListRepository groceryListRepository,
+                              GroceryItemRepository groceryItemRepository) {
         this.groceryListRepository = groceryListRepository;
         this.groceryItemRepository = groceryItemRepository;
     }

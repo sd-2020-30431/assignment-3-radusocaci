@@ -1,7 +1,16 @@
 package com.wasteless.sd.Controller;
 
 import com.wasteless.sd.Model.GroceryListItem;
-import com.wasteless.sd.Service.GroceryItemService;
+import com.wasteless.sd.mediator.Mediator;
+import com.wasteless.sd.mediator.command.CreateGroceryItemCommand;
+import com.wasteless.sd.mediator.command.DeleteGroceryItemCommand;
+import com.wasteless.sd.mediator.handlers.CreateGroceryItemCommandHandler;
+import com.wasteless.sd.mediator.handlers.DeleteGroceryItemCommandHandler;
+import com.wasteless.sd.mediator.handlers.ReadGroceryItemsQueryHandler;
+import com.wasteless.sd.mediator.query.ReadGroceryItemsQuery;
+import com.wasteless.sd.mediator.response.CreateGroceryItemCommandResponse;
+import com.wasteless.sd.mediator.response.GenericResponse;
+import com.wasteless.sd.mediator.response.ReadGroceryItemsQueryResponse;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -11,26 +20,38 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 public class GroceryItemController {
-    private final GroceryItemService groceryItemService;
 
-    public GroceryItemController(GroceryItemService groceryItemService) {
-        this.groceryItemService = groceryItemService;
+    private final Mediator mediator;
+
+    public GroceryItemController(Mediator mediator) {
+        this.mediator = mediator;
     }
 
     @GetMapping("/grocery-items/{listId}")
     public List<GroceryListItem> getAllItemsByListId(@PathVariable Integer listId) {
-        return groceryItemService.findByListId(listId);
+        ReadGroceryItemsQuery request = new ReadGroceryItemsQuery(listId);
+        ReadGroceryItemsQueryHandler handler = (ReadGroceryItemsQueryHandler)
+                mediator.<ReadGroceryItemsQuery, ReadGroceryItemsQueryResponse>handle(request);
+        ReadGroceryItemsQueryResponse response = handler.handle(request);
+        return response.getGroceryListItems();
     }
 
     @PostMapping(path = "/grocery-items/{listId}")
     public GroceryListItem createGroceryList(@Valid @RequestBody GroceryListItem groceryItem,
                                              @PathVariable(value = "listId") Integer listId,
                                              Principal principal) {
-        return groceryItemService.save(groceryItem, listId, principal.getName());
+        CreateGroceryItemCommand request = new CreateGroceryItemCommand(groceryItem, listId, principal.getName());
+        CreateGroceryItemCommandHandler handler = (CreateGroceryItemCommandHandler)
+                mediator.<CreateGroceryItemCommand, CreateGroceryItemCommandResponse>handle(request);
+        CreateGroceryItemCommandResponse response = handler.handle(request);
+        return response.getGroceryListItem();
     }
 
     @DeleteMapping("/grocery-items/{id}")
     public void deleteGroceryList(@PathVariable("id") Integer id, Principal principal) {
-        groceryItemService.deleteGroceryItem(id, principal.getName());
+        DeleteGroceryItemCommand request = new DeleteGroceryItemCommand(id, principal.getName());
+        DeleteGroceryItemCommandHandler handler = (DeleteGroceryItemCommandHandler)
+                mediator.<DeleteGroceryItemCommand, GenericResponse>handle(request);
+        handler.handle(request);
     }
 }

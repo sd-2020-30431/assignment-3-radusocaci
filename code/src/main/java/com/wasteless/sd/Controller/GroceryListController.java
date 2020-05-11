@@ -1,7 +1,6 @@
 package com.wasteless.sd.Controller;
 
 import com.wasteless.sd.Model.GroceryList;
-import com.wasteless.sd.Service.GroceryListService;
 import com.wasteless.sd.mediator.Mediator;
 import com.wasteless.sd.mediator.command.CreateGroceryListCommand;
 import com.wasteless.sd.mediator.command.DeleteGroceryListCommand;
@@ -22,11 +21,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class GroceryListController {
 
-    private final GroceryListService groceryListService;
     private final Mediator mediator;
 
-    public GroceryListController(GroceryListService groceryListService, Mediator mediator) {
-        this.groceryListService = groceryListService;
+    public GroceryListController(Mediator mediator) {
         this.mediator = mediator;
     }
 
@@ -53,6 +50,6 @@ public class GroceryListController {
         CreateGroceryListCommandHandler handler = (CreateGroceryListCommandHandler)
                 mediator.<CreateGroceryListCommand, CreateGroceryListCommandResponse>handle(request);
         CreateGroceryListCommandResponse response = handler.handle(request);
-        return groceryListService.save(response.getGroceryList());
+        return response.getGroceryList();
     }
 }

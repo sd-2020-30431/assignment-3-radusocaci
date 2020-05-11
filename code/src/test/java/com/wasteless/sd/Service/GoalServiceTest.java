@@ -2,6 +2,7 @@ package com.wasteless.sd.Service;
 
 import com.wasteless.sd.Model.Goal;
 import com.wasteless.sd.Repository.GoalRepository;
+import com.wasteless.sd.Service.command.GoalCommandService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ public class GoalServiceTest {
     GoalRepository goalRepository;
 
     @InjectMocks
-    GoalService goalService;
+    GoalCommandService goalService;
 
     @Test
     public void when_get_user_by_username_should_return_user() {

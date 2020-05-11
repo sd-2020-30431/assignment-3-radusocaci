@@ -1,4 +1,4 @@
-package com.wasteless.sd.Service;
+package com.wasteless.sd.Service.query;
 
 import com.wasteless.sd.Model.GroceryList;
 import com.wasteless.sd.Repository.GroceryListRepository;
@@ -8,15 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GroceryListService {
-    private GroceryListRepository groceryListRepository;
+public class GroceryListQueryService {
 
-    public GroceryListService(GroceryListRepository groceryListRepository) {
+    private final GroceryListRepository groceryListRepository;
+
+    public GroceryListQueryService(GroceryListRepository groceryListRepository) {
         this.groceryListRepository = groceryListRepository;
-    }
-
-    public GroceryList save(GroceryList groceryList) {
-        return groceryListRepository.save(groceryList);
     }
 
     public List<GroceryList> findAllByUsername(String userId) {
@@ -25,10 +22,6 @@ public class GroceryListService {
 
     public Optional<GroceryList> findById(Integer listId) {
         return groceryListRepository.findById(listId);
-    }
-
-    public void deleteGroceryList(Integer id) {
-        groceryListRepository.deleteById(id);
     }
 
     public List<GroceryList> findAll() {

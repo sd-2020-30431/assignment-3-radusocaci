@@ -1,14 +1,14 @@
-package com.wasteless.sd.Service;
+package com.wasteless.sd.Service.command;
 
 import com.wasteless.sd.Model.Goal;
 import com.wasteless.sd.Repository.GoalRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GoalService {
+public class GoalCommandService {
     private final GoalRepository goalRepository;
 
-    public GoalService(GoalRepository goalRepository) {
+    public GoalCommandService(GoalRepository goalRepository) {
         this.goalRepository = goalRepository;
     }
 

@@ -1,10 +1,11 @@
-package com.wasteless.sd.Service;
+package com.wasteless.sd.Service.command;
 
 import com.wasteless.sd.Model.Goal;
 import com.wasteless.sd.Model.GroceryListItem;
 import com.wasteless.sd.Model.NotificationEvent;
 import com.wasteless.sd.Repository.GroceryItemRepository;
 import com.wasteless.sd.Repository.GroceryListRepository;
+import com.wasteless.sd.Service.query.GroceryItemQueryService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -16,31 +17,30 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
-public class GroceryItemService {
+public class GroceryItemCommandService {
+
     private final GroceryItemRepository groceryItemRepository;
     private final GroceryListRepository groceryListRepository;
-    private final GoalService goalService;
+    private final GroceryItemQueryService groceryItemQueryService;
+    private final GoalCommandService goalService;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public GroceryItemService(GroceryItemRepository groceryItemRepository,
-                              GroceryListRepository groceryListRepository,
-                              GoalService goalService,
-                              ApplicationEventPublisher applicationEventPublisher) {
+    public GroceryItemCommandService(GroceryItemRepository groceryItemRepository,
+                                     GroceryListRepository groceryListRepository,
+                                     GoalCommandService goalService,
+                                     GroceryItemQueryService groceryItemQueryService, ApplicationEventPublisher applicationEventPublisher) {
         this.groceryItemRepository = groceryItemRepository;
         this.groceryListRepository = groceryListRepository;
         this.goalService = goalService;
+        this.groceryItemQueryService = groceryItemQueryService;
         this.applicationEventPublisher = applicationEventPublisher;
-    }
-
-    public List<GroceryListItem> findByListId(Integer listId) {
-        return groceryItemRepository.findByGroceryListId(listId);
     }
 
     public GroceryListItem save(GroceryListItem groceryListItem, Integer listId, String name) {
         Optional<GroceryListItem> groceryListItem1 = groceryListRepository.findById(listId).map(list -> {
             groceryListItem.setGroceryList(list);
-            List<GroceryListItem> listItems = findByListId(listId);
+            List<GroceryListItem> listItems = groceryItemQueryService.findByListId(listId);
             List<String> listItemNames = listItems
                     .stream()
                     .map(GroceryListItem::getName)
@@ -62,10 +62,6 @@ public class GroceryItemService {
     public void deleteGroceryItem(Integer id, String name) {
         groceryItemRepository.deleteById(id);
         checkWaste(name);
-    }
-
-    public GroceryListItem findById(Integer id) {
-        return groceryItemRepository.findById(id).get();
     }
 
     public void checkWaste(String name) {

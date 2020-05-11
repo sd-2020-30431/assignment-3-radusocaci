@@ -1,6 +1,6 @@
 package com.wasteless.sd.Controller;
 
-import com.wasteless.sd.Service.GroceryItemService;
+import com.wasteless.sd.Service.command.GroceryItemCommandService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +11,9 @@ import java.security.Principal;
 @CrossOrigin("*")
 public class UserController {
 
-    private final GroceryItemService groceryItemService;
+    private final GroceryItemCommandService groceryItemService;
 
-    public UserController(GroceryItemService groceryItemService) {
+    public UserController(GroceryItemCommandService groceryItemService) {
         this.groceryItemService = groceryItemService;
     }
 

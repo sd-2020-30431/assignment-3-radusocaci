@@ -1,15 +1,17 @@
 package com.wasteless.sd.mediator.handlers;
 
-import com.wasteless.sd.Service.GroceryListService;
+import com.wasteless.sd.Service.command.GroceryListCommandService;
 import com.wasteless.sd.mediator.Handler;
 import com.wasteless.sd.mediator.command.DeleteGroceryListCommand;
 import com.wasteless.sd.mediator.response.GenericResponse;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DeleteGroceryListCommandHandler implements Handler<DeleteGroceryListCommand, GenericResponse> {
 
-    private final GroceryListService groceryListService;
+    private final GroceryListCommandService groceryListService;
 
-    public DeleteGroceryListCommandHandler(GroceryListService groceryListService) {
+    public DeleteGroceryListCommandHandler(GroceryListCommandService groceryListService) {
         this.groceryListService = groceryListService;
     }
 
